@@ -1,0 +1,32 @@
+@baseUrl = http://localhost:3000
+
+### Authors
+### Get all authors
+GET {{baseUrl}}/authors
+Accept: application/json
+
+### Get author by ID
+GET {{baseUrl}}/authors/1
+Accept: application/json
+
+### Create Author
+POST {{baseUrl}}/authors
+Content-Type: application/json
+
+{
+  "name": "Yaswanth",
+  "birthday": "2005-09-11"
+}
+
+### Update Author by ID
+PUT {{baseUrl}}/authors/1
+Content-Type: application/json
+
+{
+  "name": "Nikitha",
+  "birthday": null
+}
+
+### Delete Author by ID
+DELETE {{baseUrl}}/authors/1
+Content-Type: application/json
