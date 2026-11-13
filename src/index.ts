@@ -1,20 +1,6 @@
 import { serve } from "@hono/node-server";
-import { Hono } from "hono";
-import authorRoutes from "./routes/author.ts";
+import app from "./app.ts";
 import { env } from "./config/env.ts";
-
-const app = new Hono();
-
-app.route("/authors", authorRoutes);
-
-app.get("/", (c) => {
-  return c.json(
-    {
-      message: "Server is healthy",
-    },
-    200,
-  );
-});
 
 serve(
   {

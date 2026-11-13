@@ -1,15 +1,10 @@
 @baseUrl = http://localhost:3000
 
+# Run "Create" first: the requests below reuse the id from its response.
+
 ### Authors
-### Get all authors
-GET {{baseUrl}}/authors
-Accept: application/json
-
-### Get author by ID
-GET {{baseUrl}}/authors/1
-Accept: application/json
-
 ### Create Author
+# @name createAuthor
 POST {{baseUrl}}/authors
 Content-Type: application/json
 
@@ -18,8 +13,19 @@ Content-Type: application/json
   "birthday": "2005-09-11"
 }
 
+###
+@authorId = {{createAuthor.response.body.id}}
+
+### Get all authors
+GET {{baseUrl}}/authors
+Accept: application/json
+
+### Get author by ID
+GET {{baseUrl}}/authors/{{authorId}}
+Accept: application/json
+
 ### Update Author by ID
-PUT {{baseUrl}}/authors/1
+PUT {{baseUrl}}/authors/{{authorId}}
 Content-Type: application/json
 
 {
@@ -28,5 +34,89 @@ Content-Type: application/json
 }
 
 ### Delete Author by ID
-DELETE {{baseUrl}}/authors/1
+DELETE {{baseUrl}}/authors/{{authorId}}
+
+
+### Users
+### Create User
+# @name createUser
+POST {{baseUrl}}/users
 Content-Type: application/json
+
+{
+  "email": "yaswanth@example.com",
+  "password": "password123"
+}
+
+###
+@userId = {{createUser.response.body.id}}
+
+### Get all users
+GET {{baseUrl}}/users
+Accept: application/json
+
+### Get user by ID
+GET {{baseUrl}}/users/{{userId}}
+Accept: application/json
+
+### Update User by ID
+PUT {{baseUrl}}/users/{{userId}}
+Content-Type: application/json
+
+{
+  "email": "nikitha@example.com",
+  "password": "newpassword123"
+}
+
+### Delete User by ID
+DELETE {{baseUrl}}/users/{{userId}}
+
+
+### Auth
+### Register
+POST {{baseUrl}}/auth/register
+Content-Type: application/json
+
+{
+  "email": "auth-demo@example.com",
+  "password": "password123"
+}
+
+### Login
+# @name login
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "auth-demo@example.com",
+  "password": "password123"
+}
+
+### Get current user (run Login first)
+GET {{baseUrl}}/auth/me
+Authorization: Bearer {{login.response.body.token}}
+Accept: application/json
+
+
+### API Keys (run Login first)
+### Create API key (the full key is only shown in this response)
+# @name createApiKey
+POST {{baseUrl}}/api-keys
+Authorization: Bearer {{login.response.body.token}}
+Content-Type: application/json
+
+{
+  "name": "My first key"
+}
+
+###
+@apiKeyId = {{createApiKey.response.body.apiKey.id}}
+
+### Get my API keys
+GET {{baseUrl}}/api-keys
+Authorization: Bearer {{login.response.body.token}}
+Accept: application/json
+
+### Delete API key by ID
+DELETE {{baseUrl}}/api-keys/{{apiKeyId}}
+Authorization: Bearer {{login.response.body.token}}
