@@ -1,9 +1,10 @@
 import { Hono } from "hono";
 import * as userController from "../controllers/user.controller.ts";
+import { requireApiKey } from "../middlewares/apiKey.middleware.ts";
 
 const app = new Hono();
 
-app.get("/", ...userController.getAll);
+app.get("/", requireApiKey, ...userController.getAll);
 app.get("/:id", ...userController.getById);
 app.post("/", ...userController.create);
 app.put("/:id", ...userController.update);
